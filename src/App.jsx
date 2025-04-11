@@ -1,14 +1,14 @@
 import "./App.css";
-import Questions from "./components/Questions";
-import Main from "./components/Main";
-// import NavBar from "./components/NavBar";
+import Main from "./components/Main"; // Assuming Main uses the Quiz context
+import { QuizProvider } from "./hooks/QuizContext"; // Import QuizProvider
+
 function App() {
   return (
-    <>
-      {/* <NavBar /> */}
+    <QuizProvider>
+      {" "}
+      {/* Wrap your components with QuizProvider */}
       <Main />
-      {/* <Questions /> */}
-    </>
+    </QuizProvider>
   );
 }
 
