@@ -1,8 +1,8 @@
 import { motion } from "framer-motion";
 import { useQuiz } from "../hooks/QuizContext";
-
+import questions from "../data/QuizQuestions";
 function ProgressBar() {
-  const { progress } = useQuiz();
+  const { progress, currentQuestionIndex } = useQuiz();
 
   return (
     <div className="flex items-center gap-2 w-full">
@@ -19,7 +19,7 @@ function ProgressBar() {
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.6, delay: 0.3 }}
       >
-        {progress / 20 + 1}/5
+        {currentQuestionIndex + 1} out of {questions.length}
       </motion.p>
     </div>
   );

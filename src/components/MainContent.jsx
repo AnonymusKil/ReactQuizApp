@@ -9,12 +9,13 @@ function MainContent() {
     color,
     handleAnswer,
     showNextQuestion,
+    labeledOptions,
   } = useQuiz();
 
   return (
     <section className="mx-auto px-4">
       <motion.h1
-        className="text-4xl md:text-5xl font-extrabold text-purple-500 my-8 drop-shadow-lg text-start lg:text-center leading-tight"
+        className="text-4xl md:text-5xl font-extrabold text-purple-800 my-8 drop-shadow-lg text-start lg:text-center leading-tight"
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
@@ -28,21 +29,34 @@ function MainContent() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.4 }}
       >
-        <aside className="flex flex-col rounded-xl p-4 gap-4 lg:w-[40%] mx-auto border border-gray-200">
-          {currentQuestion.options.map((option, index) => (
-            <button
-              key={index}
-              className={`py-3 px-5 rounded-md hover:bg-gray-200 transition duration-300 ${
-                selectedAnswer === option
-                  ? "bg-green-500 text-white"
-                  : "bg-red-600 text-gray-800"
-              }`}
-              onClick={() => handleAnswer(option)}
-              disabled={isDisabled}
-            >
-              {option}
-            </button>
-          ))}
+        <aside className="flex flex-col rounded-xl p-4 gap-4 lg:w-[40%] lg:mx-auto border border-gray-200">
+          {labeledOptions.map(({ letter, text, fullOption }, index) => {
+            const isCorrect = fullOption === currentQuestion.correctAnswer;
+            const isSelected = fullOption === selectedAnswer;
+
+            let bgColor = "bg-white text-gray-800";
+            if (isDisabled) {
+              if (isCorrect) bgColor = "bg-green-500 text-white";
+              else if (isSelected) bgColor = "bg-red-500 text-white";
+              else bgColor = "bg-gray-100 text-gray-700";
+            }
+
+            return (
+              <button
+                key={index}
+                className={`py-3 px-5 rounded-md flex items-center justify-between gap-2 border hover:bg-gray-100 transition duration-300 ${bgColor}`}
+                onClick={() => handleAnswer(fullOption)}
+                disabled={isDisabled}
+              >
+                <div className="flex items-center gap-3 text-left">
+                  <span className="font-bold">{letter})</span>
+                  <span>{text}</span>
+                </div>
+                {isDisabled && isCorrect && <span>✅</span>}
+                {isDisabled && isSelected && !isCorrect && <span>❌</span>}
+              </button>
+            );
+          })}
         </aside>
       </motion.div>
 

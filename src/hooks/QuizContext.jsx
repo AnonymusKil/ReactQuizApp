@@ -12,6 +12,14 @@ export function QuizProvider({ children }) {
   const [selectedAnswer, setSelectedAnswer] = useState(null);
 
   const currentQuestion = questions[currentQuestionIndex];
+  const optionLetters = ["A", "B", "C", "D"];
+
+  // Combine letters with options like { letter: 'A', text: 'Option A)' }
+  const labeledOptions = currentQuestion.options.map((option, index) => ({
+    letter: optionLetters[index],
+    fullOption: option,
+    text: option.replace(/^[A-D]\)\s*/, ""), // remove "A)" if it exists
+  }));
 
   const handleAnswer = (selectedAnswer) => {
     const current = questions[currentQuestionIndex];
@@ -51,6 +59,8 @@ export function QuizProvider({ children }) {
         color,
         handleAnswer,
         showNextQuestion,
+        currentQuestionIndex,
+        labeledOptions,
       }}
     >
       {children}
